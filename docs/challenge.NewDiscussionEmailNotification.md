@@ -1,4 +1,4 @@
-# [serenity] New Disccsion email Notification with Kue and sendgrid
+# [serenity] New Discussion email Notification with Kue and sendgrid
 
 
 Like food, water, shelter, and fire, sending emails when a discussion message is posted to a site is a fundamental skill for survival.  This exploratory challenge will allow you to use two of our serenity apis, Kue (node job queue), and sendgrid to send email notifications.
