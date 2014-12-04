@@ -40,24 +40,24 @@ module.exports = {
             // Redis To Go
             // https://devcenter.heroku.com/articles/redistogo#using-with-node-js
             if (process.env.REDISTOGO_URL)
-                return prepareClient(REDISTOGO_URL);
+                return prepareClient(process.env.REDISTOGO_URL);
 
             // Redis Cloud
             // https://devcenter.heroku.com/articles/rediscloud#using-redis-from-node-js
             else if (process.env.REDISCLOUD_URL)
-                return prepareClient(REDISCLOUD_URL, {
+                return prepareClient(process.env.REDISCLOUD_URL, {
                     no_ready_check: true
                 });
 
             // Openredis
             // https://devcenter.heroku.com/articles/openredis#using-redis-from-node-js
             else if (process.env.OPENREDIS_URL)
-                return prepareClient(OPENREDIS_URL);
+                return prepareClient(process.env.OPENREDIS_URL);
 
             // RedisGreen
             // https://devcenter.heroku.com/articles/redisgreen#using-redis-with-node-js
             else if (process.env.REDISGREEN_URL)
-                return prepareClient(REDISGREEN_URL);
+                return prepareClient(process.env.REDISGREEN_URL);
 
             // For local environment.
             else

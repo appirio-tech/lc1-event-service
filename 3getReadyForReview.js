@@ -53,19 +53,21 @@ function ProcessChallenges(err, rsp) {
 
         // Iterate over the data
         // to create jobs for each challenge to be set to review.
-        // In dev mode we will work only with filtered set of challenges.
-        if (process.env.NODE_ENV == 'production') {
+        // If REVIEW_DEV_FILTER we will work only with filtered set of challenges.
+        if (!process.env.REVIEW_DEV_FILTER) {
             _(rsp.content).forEach(enqueueChallenge);
         } else {
-            _.chain(rsp.content)
-                .filter({
-                    overview: process.env.REVIEW_DEV_FILTER || 'Kue refactor --kiri4a test'
-                })
-                .tap(function (content) {
-                    challenges_to_process = content.length;
-                    log.info('Dev mode -> Challenges filtered to %d', challenges_to_process);
-                })
-                .forEach(enqueueChallenge);
+            log.info('Dev mode -> Filtering challenges with overview contains %s', process.env.REVIEW_DEV_FILTER);
+
+            var filtered_data = _.filter(rsp.content, function (item) {
+                return item.overview.indexOf(process.env.REVIEW_DEV_FILTER) != -1;
+            });
+
+            challenges_to_process = filtered_data.length;
+            log.info('Dev mode -> Challenges filtered to %d', challenges_to_process);
+
+            // Iterate the filtered data.
+            _.forEach(filtered_data, enqueueChallenge);
         }
 
         // Handle exit|poll when there is no data to process.
@@ -115,24 +117,19 @@ function enqueueChallenge(chall) {
  * Handles graceful process exit or polls for new data in intervals.
  */
 function shutdownOrPoll() {
-    // Graceful shutdown in Heroku, poll|exit in local.
+    // Graceful shutdown|poll.
     // Allow this producer to use the Heroku's scheduler
-    // to be started regularly. Makes use of the fact that in Heroku
-    // the DYNO env var will be defined.
-    if (process.env.DYNO) {
-        log.info('All %d processed. Shuting down...', challenges_to_process);
-        jobs.shutdown(function () {
-            process.exit();
-        }, 1000);
-    } else if (process.env.AUTO_POLLING == true) {
-        // Consider this local environment with AUTO_POLLING enabled.
+    // to be started regularly. In this case the process need to exit when done.
+    // But leave the possibility to do auto polling in Heroku or local too.
+    if (process.env.AUTO_POLLING) {
+        // Consider this environment with AUTO_POLLING enabled.
         // Use timeout to poll in intervals.
         log.info('All %d processed. Next polling in %d ms', challenges_to_process, process.env.REVIEW_POLL_INTERVAL || 60 * 1000);
         setTimeout(function () {
             getChallengesReadyForReview(ProcessChallenges);
         }, process.env.REVIEW_POLL_INTERVAL || 60 * 1000);
     } else {
-        // Consider this local environment with AUTO_POLLING disabled.
+        // Consider this environment with AUTO_POLLING disabled.
         log.info('All %d processed. Shuting down...', challenges_to_process);
         jobs.shutdown(function () {
             process.exit();

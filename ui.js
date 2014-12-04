@@ -45,5 +45,5 @@ if (process.env.NODE_ENV == 'production')
 app.use(kue.app)
 
 // Start the server.
-app.listen(process.env.PORT || 3333);
-log.info('Kue\'s admin UI started on port', process.env.PORT || 3333);
+app.listen(parseInt(process.env.PORT) || 3333);
+log.info('Kue\'s admin UI started on port', parseInt(process.env.PORT) || 3333);
