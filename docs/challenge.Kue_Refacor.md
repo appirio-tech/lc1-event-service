@@ -18,5 +18,5 @@ Requirements.
 
 Submission Guidelines:
 1. Submit your src as a single zip file which includes the .git dir
-2. Submit a short video of your solution in action (links to screencast, youtube, dropbox are prefered over video file uploads.)  If English is not your first language you are welcome to annotate you video with text over narration.
+2. Submit a short video of your solution in action (links to screencast, youtube, dropbox are preferred over video file uploads.)  If English is not your first language you are welcome to annotate you video with text over narration.
 3. Submit a detail description of you implementation and recommendation.  

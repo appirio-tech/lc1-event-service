@@ -11,7 +11,7 @@ This  is a temporary repo to store project serenity's events service.   The cons
 3. There are four other node files, 2 producers ( 3getReadyForReview.js and 4getResetChallenges.js) and 2 consumers (3setToReview and 4setToSubmission)
 
 ### 3getReadyForReview.js *- Producer*
->Makes a call to the [dev-challenge-service](http://dev-lc1-challenge-service.herokuapp.com) (no authtecation required) and gets all the challenge records who have a status = "SUBMISSION" and whose subEndAt is before `now()`.   These are challenges that are in the submission phase and need to be switch to the ***"Review"*** phase.  These jobs (records) are placed on a queue called `ready_for_review`.   This job has an interval so it takes 10 seconds before you will see any logs on the console.    Once you got your records you should stob this job with CTRL^c  
+>Makes a call to the [dev-challenge-service](http://dev-lc1-challenge-service.herokuapp.com) (no authentication required) and gets all the challenge records who have a status = "SUBMISSION" and whose subEndAt is before `now()`.   These are challenges that are in the submission phase and need to be switch to the ***"Review"*** phase.  These jobs (records) are placed on a queue called `ready_for_review`.   This job has an interval so it takes 10 seconds before you will see any logs on the console.    Once you got your records you should stob this job with CTRL^c  
 
 ### 3setToReview.js *- Consumer*
 >This consumer reads from the `ready_for_review` and makes a ***PUT*** call to the [dev challenge service](http://dev-lc1-challenge-service.herokuapp.com) update the status from ***SUBMISSION*** to ***REVIEW***.  In addition to sending the new status in the payload it also must pass two required fields:  *title* and *projectSource*.  Since they are required by the API.
@@ -23,6 +23,12 @@ This  is a temporary repo to store project serenity's events service.   The cons
 ### 4setToSubmission.js *- Consumer*
 >This Consumer is just like 3setToReview.js but it sets these 8 challenges back to ***SUBMISSION*** regardless of there status.
 
+### 5getChallengesforMail.js *- Producer*
+>gets the latest 2 challenges (arbitrary) and enqueues them to test_email so we can use them to send some test emails.
+
+### 5sendEmail.js *- Consumer*
+>send sample emails with the challenge title and description from the queue test_email
+
 Currently these workers are dumb and won't check for duplicates.   As a matter of fact both the getters (producers) and setters (consumers)  are on an intervall so the getters will create duplicate records every 10 seconds.   The setters are on an interval too but once the queue is empty they don't do anything.
 
-Since the dev challenge service is shared by a number of devleopers you will need to be carefull that others aren't moving your records around.   You may need to color your data to make sure you are the one updateing it.   For example in your setters you may add your handle to the title or set the source to your handle.   You may also need to modify your getters to get a smaller subset of controlled records.   Look at the [swagger docs](http://dev-lc1-challenge-service.herokuapp.com/docs/) for the challenge service and pay attention to the filters and  fields parmaters.
+Since the dev challenge service is shared by a number of developers you will need to be carefull that others aren't moving your records around.   You may need to color your data to make sure you are the one updateing it.   For example in your setters you may add your handle to the title or set the source to your handle.   You may also need to modify your getters to get a smaller subset of controlled records.   Look at the [swagger docs](http://dev-lc1-challenge-service.herokuapp.com/docs/) for the challenge service and pay attention to the filters and  fields parmaters.

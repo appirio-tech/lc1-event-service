@@ -11,12 +11,14 @@ var q = kue.createQueue({
     }
   }
 });
+var PORT = 3000;
 
 
 
 
 // start the admin client
-kue.app.listen(3000);
+kue.app.listen(PORT);
+console.log('Kue UI listening on port '+ PORT);
 kue.app.set('title', 'LC event service');
 
 
