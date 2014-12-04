@@ -79,7 +79,9 @@ as and alternaitve you could do a call to challenge 3 a specify the fields you w
 4.  Create the appropriate producers and consumers as described in the Flow that will result in send mock emails to the participants of the challenge minus the author.
 5. The end goal of this challenge is to send actual emails but only to yourself and the subject of email will contain the userid or handle to simulate the actual mailto address of all the participants.  You can look the the consumer/producers with the 5 prefix to get an idea of how the mail functionality works but it is pretty trivial.    You will need to sign up for a free account with sendgrid and you may use topcoder.com as the website in the signup.  The sendgrid node module is in the package.json so all you need to do is put your `SENDGRID_USERNAME` and `SENDGRID_USERNAME`  in a .env file.  (.env* is in gitignore but be sure to delete yours when you submit.)
 6. Address error handling and retries as you see necessary.  Since the discussion services (your simulate curl call) will be making the first job you can assume that it is not necessary to check for duplicates but it would be nice.
-7. The result of this challenge is not deployment ready code but it should prove it works That being said you have some liberties to make some choices that will allow for flexibility, scaleability and ease of use.  Please read the other challenge doc in the repo and the Readme for setup instructions and more context.
+7. Also it is desired to have some sort of status about the sendmail call in the completed jobs if it is possible.
+8. The result of this challenge is not deployment ready code but it should prove it works That being said you have some liberties to make some choices that will allow for flexibility, scaleability and ease of use.  Please read the other challenge doc in the repo and the Readme for setup instructions and more context.
+
 
 ## Submission Guidelines:
 1. Submit your src as a single zip file which includes the .git dir
