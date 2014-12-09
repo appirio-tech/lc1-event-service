@@ -28,8 +28,10 @@ q.process(
             if (err) {
                 // Let retries be controlled via queue's job attemps.
                 // Just mark this attempt as failed.
+                job.log('Error: ' + JSON.stringify(err) );
                 done(err);
             } else {
+               job.log('Success: ' + JSON.stringify(rsp) );
                 done(null, rsp);
             }
         });

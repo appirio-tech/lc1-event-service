@@ -26,7 +26,7 @@ setInterval(
   function() {
 
     console.log(" the time is " + mydatetime);
-    var apiCall = 'http://dev-lc1-challenge-service.herokuapp.com/challenges?filter=id=in(5,7,8,9,10,24,25,26)';
+    var apiCall = 'http://dev-lc1-challenge-service.herokuapp.com/challenges?filter=id=in(42,43,45)';
     apiCall += '%26subEndAt<';
     apiCall += mydatetime;
     console.log(' the api call is ' + apiCall);
