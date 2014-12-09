@@ -1,74 +1,53 @@
-var kue = require('kue');
-var http = require('http');
-var q = kue.createQueue({
-  prefix: 'q',
-  redis: {
-    port: 6379,
-    host: '127.0.0.1',
-    //  auth: 'password',
-    db: 3, // if provided select a non-default redis db
-    options: {
-      // see https://github.com/mranney/node_redis#rediscreateclientport-host-options
+/*
+ * Copyright (C) 2014 TopCoder Inc., All Rights Reserved.
+ *
+ * @version 1.0
+ * @author TCCODER
+ */
+
+
+/*!
+ * Module dependencies
+ */
+var kue = require('kue'),
+    log = require('./utils/logger'),
+    q = kue.createQueue(require('./config/kue')),
+    setChallengeToReview = require('./utils/setChallengeToReview');
+
+
+log.info('Init review challange consumer...');
+
+// Define the job consumer processing the queue.
+q.process(
+    process.env.REVIEW_QUEUE_NAME || 'ready_for_review',
+    function (job, done) {
+
+        log.info('Processing job with id: %d for challange', job.id, job.data);
+
+        setChallengeToReview(job, function (err, rsp) {
+            if (err) {
+                // Let retries be controlled via queue's job attemps.
+                // Just mark this attempt as failed.
+                done(err);
+            } else {
+                done(null, rsp);
+            }
+        });
     }
-  }
-});
+);
 
-
-// createthe job queue
-var jobs = kue.createQueue();
-
-jobs.process('ready_for_review', function(job, done) {
-  console.log(job.data);
-  setTimeout(function() {
-    console.log('job challenge id: ' + job.data.id + ' processed');
-
-    var body = {
-      status: 'REVIEW',
-      title: job.data.title,
-      projectSource:  "TOPCODER"
-    };
-    var bodyString = JSON.stringify(body);
-    var headers = {
-      'Content-Type': 'application/json',
-      'Content-Length': bodyString.length
-    };
-    console.log('the body length is '+ bodyString.length);
-    var options = {
-      host: 'dev-lc1-challenge-service.herokuapp.com',
-      port: 80,
-      path: '/challenges/' + job.data.id,
-      method: 'PUT',
-      headers: headers
-    };
-
-   console.log('DEBUG host + path '+ options.host + options.path);
-
-    var req = http.request(options, function(res) {
-      res.setEncoding('utf8');
-
-      var responseString = '';
-
-      res.on('data', function(chunk) {
-        responseString += chunk;
-        //console.log('Reponse: ' + chunk);
-      });
-
-      res.on('end', function() {
-        var resultObject = JSON.parse(responseString);
-        console.log('the response is ' + responseString);
-      });
-
-      req.on('error', function(e) {
-        console.log('the error is ' + e);
-      });
-
-    });
-    req.write(bodyString);
-    req.end();
-
-
-
-    done();
-
-  }, 3000);
+// Handle job enqueued event.
+q.on('job enqueue', function (id) {
+    // Job enqueued notification.
+    log.info('job enqueued with id: %d ', id);
+}).on('job failed attempt', function (id, error) {
+    // Retry of failed jobs is controlled by attempts value
+    // so here just notify.
+    log.error('job id: %d attempt failed', id, error);
+}).on('job failed', function (id, error) {
+    // Job failed notification.
+    log.error('job id: %d failed', id, error);
+}).on('job complete', function (id, result) {
+    // Job completed notification.
+    log.info('job id: %d completed', id, result);
 });

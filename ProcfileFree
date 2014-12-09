@@ -1,0 +1,3 @@
+web: node ui.js
+worker: node 3setToReview.js
+producer: node 3getReadyForReview.js
