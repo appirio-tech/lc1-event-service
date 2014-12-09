@@ -31,7 +31,7 @@ module.exports = function (callback, apiURL) {
     // Append the filter condition.
     apiURL += '?filter=status=SUBMISSION' + '%26subEndAt<' + current_datetime;
     // added limit 1 to pass out the workers due to the fixed number of redis clinets of 10
-    apiURL += '&limit=1'
+    //apiURL += '&limit=1';
 
     log.info('Requesting GET %s', apiURL);
 
