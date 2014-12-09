@@ -38,11 +38,19 @@ module.exports = function (job, callback, apiURL) {
     log.info('Requesting PUT %s', apiURL);
 
     // Make the request.
+
+       var headers = {
+         'Authorization': 'Bearer ' + process.env.MYTOKEN,
+         'User-Agent': 'Kue - 3setToReview'
+       }
+
+
     request({
         method: 'PUT',
         url: apiURL,
         json: true,
-        body: job.data
+        body: job.data,
+        headers: headers
     }, function (err, rsp, body) {
         // Process error|response.
         if (err || rsp.statusCode != 200) {
