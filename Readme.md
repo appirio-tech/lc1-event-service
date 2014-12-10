@@ -14,7 +14,7 @@ This  is a  repo to store project serenity's events service (time based workflow
 *** Enviromental Variables ***
 
 | Name of variable	| Default value|
-|--|--|
+|---|---|
 | KUE_PREFIX | 	'q'|
 | SERENITY_CHALLENGE_API |	The URL of the API. Defaults to 'http://dev-lc1-challenge-service.herokuapp.com/challenges'|
 | REDISTOGO_URL |	Available with Heroku's redistogo addon.|
