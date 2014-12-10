@@ -6,7 +6,7 @@ var q = kue.createQueue({
     port: 6379,
     host: '127.0.0.1',
     //  auth: 'password',
-    db: 3, // if provided select a non-default redis db
+    //db: 3, // if provided select a non-default redis db
     options: {
       // see https://github.com/mranney/node_redis#rediscreateclientport-host-options
     }
@@ -22,8 +22,8 @@ var mydatetime = new Date().toISOString();
 //
 // }
 
-setInterval(
-  function() {
+// setInterval(
+//   function() {
 
     console.log(" the time is " + mydatetime);
     var apiCall = 'http://dev-lc1-challenge-service.herokuapp.com/challenges?filter=id=in(42,43,45)';
@@ -71,4 +71,4 @@ setInterval(
 
     } // get and call back
   );
- }, 10000); // function, setInterval
+ // }, 10000); // function, setInterval
