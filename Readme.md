@@ -15,7 +15,7 @@ This  is a  repo to store project serenity's events service (time based workflow
 
 | Name of variable	| Default value|
 |---|---|
-| KUE_PREFIX | 	'q'|
+| KUE_PREFIX | q|
 | SERENITY_CHALLENGE_API |	The URL of the API. Defaults to 'http://dev-lc1-challenge-service.herokuapp.com/challenges'|
 | REDISTOGO_URL |	Available with Heroku's redistogo addon.|
 | REDISCLOUD_URL |	Available with Heroku's rediscloud addon.|
@@ -35,6 +35,19 @@ This  is a  repo to store project serenity's events service (time based workflow
 | AUTH_USER |	When NODE_ENV='production' Basic HTTP Auth will protect the kue's admin ui. This is the user to login. Defaults to 'foo'.|
 | AUTH_PASS |	When NODE_ENV='production' Basic HTTP Auth will protect the kue's admin ui. This is the pass to login. Defaults to 'bar'.|
 | MYTOKEN| as a temporary measure I put in my auth bearer token when working with the authenticated api |
+
+***Environmental Variables for  Discussion Notification***
+
+| Name of variable	|  values|
+|---|---|
+| DISC_MESSAGE_QUEUE_NAME | 60_new_discussion_message |
+| SEND_DISC_NOTE_QUEUE_NAME | 61_sendDiscussionNotification |
+| SEND_DISC_NOTE_QUEUE_PRIORITY | normal |
+| SEND_DISC_NOTE_QUEUE_ATTEMPTS | 3 |
+| AUTH_USER | *needs to be set if NODE_ENV=production* |
+| AUTH_PASS | *needs to be set if NODE_ENV=production* |
+| SENDGRID_USER | *needs to be set for mail to work* |
+| SENDGRID_API_KEY | *needs to be set for mail to work* |
 
 
 ## Workers
