@@ -1,6 +1,6 @@
 
-var dotenv = require('dotenv');
-dotenv.load();
+//var dotenv = require('dotenv');
+//dotenv.load();
 
 var kue = require('kue');
 var q = kue.createQueue({
