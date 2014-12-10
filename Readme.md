@@ -11,7 +11,7 @@ This  is a  repo to store project serenity's events service (time based workflow
 3. There are four other node files, 2 producers ( 3getReadyForReview.js and 4getResetChallenges.js) and 2 consumers (3setToReview and 4setToSubmission)
 
 ## Heroku Setup
-*** Enviromental Variables ***
+***Environmental Variables***
 
 | Name of variable	| Default value|
 |---|---|
