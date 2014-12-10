@@ -12,7 +12,7 @@
 var request = require('request'),
   log = require('./logger.js');
 //  dotenv = require('dotenv').load(),
-//  module_name = require('path').basename(__filename, '.js');
+  module_name = require('path').basename(__filename, '.js');
 
 
 /**
