@@ -66,11 +66,17 @@ This  is a  repo to store project serenity's events service (time based workflow
 ### 4setToSubmission.js *- Consumer*
 >This `utility worker` Consumer is just like 3setToReview.js but it sets these 8 challenges back to ***SUBMISSION*** regardless of there status.
 
-### 5getChallengesforMail.js *- Producer*
+### 5getChallengesforMail.js *- Producer FOR TESTING ONLY*
 >gets the latest 2 challenges (arbitrary) and enqueues them to test_email so we can use them to send some test emails.
 
-### 5sendEmail.js *- Consumer*
+### 5sendEmail.js *- Consumer FOR TESTING ONLY*
 >send sample emails with the challenge title and description from the queue test_email
+
+### 6getParticpantsForDiscussionNotification.js *- consumer/producer*
+>this worker depends on an external call to create a job in in the queue `60_new_discussion_message`  and it consumes this job (a single new message) then calls the challenge api to get a list of participants, the results are checked with the messageid against the completed jobs for duplicates, if none are found it will add a job for each particpant except the originator of the message, and put it on the queue `61_sendDiscussionNotification`
+
+### 6sendDiscussionNotificationEmails.js *- Consumer*
+>reads from the `61_sendDiscussionNotification` and send the emails via sendgrid.   At the current time all emails are sent to the processes.env.RECIPIENT_TEST_EMAIL email 
 
 Currently these workers are dumb and won't check for duplicates.   As a matter of fact both the getters (producers) and setters (consumers)  are on an intervall so the getters will create duplicate records every 10 seconds.   The setters are on an interval too but once the queue is empty they don't do anything.
 
