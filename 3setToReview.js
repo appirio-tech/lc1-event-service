@@ -11,14 +11,14 @@
  */
 var kue = require('kue'),
     log = require('./utils/logger'),
-    q = kue.createQueue(require('./config/kue')),
+    jobs = kue.createQueue(require('./config/kue')),
     setChallengeToReview = require('./utils/setChallengeToReview');
 
 
 log.info('Init review challange consumer...');
 
 // Define the job consumer processing the queue.
-q.process(
+jobs.process(
     process.env.REVIEW_QUEUE_NAME || 'ready_for_review',
     function (job, done) {
 
@@ -38,8 +38,11 @@ q.process(
     }
 );
 
+// promote delayed jobs
+jobs.promote( 5000 );
+
 // Handle job enqueued event.
-q.on('job enqueue', function (id) {
+jobs.on('job enqueue', function (id) {
     // Job enqueued notification.
     log.info('job enqueued with id: %d ', id);
 }).on('job failed attempt', function (id, error) {

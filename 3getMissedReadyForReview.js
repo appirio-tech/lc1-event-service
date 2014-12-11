@@ -121,7 +121,7 @@ function shutdownOrPoll() {
     // Allow this producer to use the Heroku's scheduler
     // to be started regularly. In this case the process need to exit when done.
     // But leave the possibility to do auto polling in Heroku or local too.
-    if (process.env.AUTO_POLLING && process.env.AUTO_POLLING == 1 ) {
+    if (process.env.AUTO_POLLING_MISSED && process.env.AUTO_POLLING_MISSED == 1 ) {
         // Consider this environment with AUTO_POLLING enabled.
         // Use timeout to poll in intervals.
         log.info('All %d processed. Next polling in %d ms', challenges_to_process, process.env.REVIEW_POLL_INTERVAL || 60 * 1000);
