@@ -73,6 +73,7 @@ q.process(
                         createdBy: participant.createdBy,
                         createdAt: new Date(job.data.createdAt).toUTCString(),
                         userHandle: participant.userHandle,
+                        userId: participant.userId,
                         messageId: job.data.messageId
                       })
                     .priority(SEND_DISC_NOTE_QUEUE_PRIORITY)
