@@ -53,7 +53,7 @@ q.process(
             } else {
               // Filter out msg creator
               var participants = _.reject(rsp.content.participants, {
-                createdBy: job.data.createdBy
+                userId: job.data.createdBy
               });
               log.info('DEBUG: participants are ' + participants);
               // Iterate the data and add users to emailing queue
@@ -70,7 +70,8 @@ q.process(
                         title: rsp.content.title,
                         content: job.data.content,
                         challengeId: participant.challengeId,
-                        createdBy: participant.createdBy,
+                        createdBy: job.data.createdBy,
+                        authorId: job.data.createdBy,
                         createdAt: new Date(job.data.createdAt).toUTCString(),
                         userHandle: participant.userHandle,
                         userId: participant.userId,
