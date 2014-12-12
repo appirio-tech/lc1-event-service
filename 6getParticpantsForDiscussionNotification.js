@@ -70,7 +70,6 @@ q.process(
                         title: rsp.content.title,
                         content: job.data.content,
                         challengeId: participant.challengeId,
-                        createdBy: job.data.createdBy,
                         authorId: job.data.createdBy,
                         createdAt: new Date(job.data.createdAt).toUTCString(),
                         userHandle: participant.userHandle,
