@@ -67,8 +67,9 @@ q.process(
                   // Create the job.
                   var email_job = q.create(
                       SEND_DISC_NOTE_QUEUE_NAME, {
-                        title: rsp.content.title,
+                        title: rsp.content.title + ' for '+ participant.userHandle,
                         content: job.data.content,
+                        challengeTitle: rsp.content.title,
                         challengeId: participant.challengeId,
                         authorId: job.data.authorId,
                         createdAt: new Date(job.data.createdAt).toUTCString(),
