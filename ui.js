@@ -14,7 +14,8 @@ q = kue.createQueue(require('./config/kue')),
 basicAuth = require('basic-auth'),
 express = require('express'),
 log = require('./utils/logger'),
-PORT = parseInt(process.env.PORT) || 3333;
+PORT = parseInt(process.env.PORT) || 3333,
+BASEURL = process.env.BASEURL;
 
 
 // Create express app to serve admin UI.
@@ -46,6 +47,8 @@ if (process.env.NODE_ENV == 'production') {
 // Add kue's functionallity.
 app.use(kue.app);
 
+kue.app.mountpath = BASEURL + ':' + PORT
+
 // Start the server.
 app.listen(PORT);
-log.info('Kue\'s admin UI started on port', PORT);
+log.info('Kue\'s admin UI started on: ' + BASEURL + ':' + PORT);
